@@ -16,7 +16,6 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/81/three.js"></script>
 <script type="text/javascript" src="./scatter3.js"></script>
 <script type="text/javascript">
-    debugger;
     // Define a function to initialise the plot:
     function init_plot() {
       // The object to hold all the information about the plot:
@@ -49,8 +48,7 @@
         {"x": 0.99, "y": 93.96, "z": 0.36}
       ];
       
-      // Make the plot:
-      debugger;
+      // Make the plot: THIS IS THE MAIN LOOP FN.
       three_d.make_scatter(params);
     }
     

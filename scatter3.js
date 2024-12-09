@@ -2969,7 +2969,7 @@ var prepare_sizes = function(i_plot, params) {
 }
 
 var make_axes = function(i_plot, params, append) {
-    debugger;
+    // debugger;
 	// Sometimes this will be called when the plot is
 	// first initialised; sometimes it will be when the
 	// data is updated change_data() calls it.
@@ -3949,11 +3949,11 @@ var calculate_color = function(val, domain, color_fn) {
 }
 
 var make_points = function(i_plot, params, plot_locations, null_points, append) {
-    debugger;
+    // debugger;
 	if (append === undefined) {
 		append = false;
 	}
-	
+	console.log('Make Points---------------------')
 	var i, j, font_color, color_obj, group, start_i, this_size, this_loc, i_group;
 	
 	var scale_factor = get_scale_factor(i_plot);
@@ -4050,6 +4050,7 @@ var make_points = function(i_plot, params, plot_locations, null_points, append) 
 					this_loc = plots[i_plot].scales[j](plots[i_plot].points[i].input_data[axes[j]]);
 					
 					if (plots[i_plot].geom_type == "point") {
+                        console.log('POINT LOC------------------')
 						point_locations[3*i + j] = this_loc;
 					} else if (plots[i_plot].geom_type == "quad") {
 						plots[i_plot].points[i].position[axes[j]] = this_loc;
@@ -4104,7 +4105,7 @@ var make_points = function(i_plot, params, plot_locations, null_points, append) 
 	var sum_bg = bg_color_obj.r + bg_color_obj.g + bg_color_obj.b;
 	var use_white = (sum_bg > 1.5) ? false : true;
 	
-	
+	console.log('Loop Data----------------------------')
 	for (i = 0; i < params.data.length; i++) {
 		color_obj = hex_to_rgb_obj_255(params.data[i].color);
 		
@@ -4134,7 +4135,7 @@ var make_points = function(i_plot, params, plot_locations, null_points, append) 
 			
 			plots[i_plot].points.push({});
 		} else if (plots[i_plot].geom_type == "quad") {
-			
+			console.log('Three Mesh-----------------------------')
 			plots[i_plot].points.push(new THREE.Mesh(
 				new THREE.PlaneBufferGeometry(1, 1, 1),
 				plots[i_plot].groups[group].quad_material
@@ -4155,7 +4156,7 @@ var make_points = function(i_plot, params, plot_locations, null_points, append) 
 				plots[i_plot].points[start_i + i].hide_points[j] = 0;
 				plots[i_plot].points[start_i + i].null_points[j] = null_points[i];
 			}
-			
+			console.log('Postion Point------------------------')
 			plots[i_plot].points[start_i + i].position.x = plot_locations[i][0];
 			plots[i_plot].points[start_i + i].position.y = plot_locations[i][1];
 			plots[i_plot].points[start_i + i].position.z = plot_locations[i][2];
@@ -4180,7 +4181,7 @@ var make_points = function(i_plot, params, plot_locations, null_points, append) 
 			
 			if (params.data[i].label.length > 0) {
 				plots[i_plot].points[start_i + i].have_label = true;
-				
+				console.log('Add Label--------------------')
 				plots[i_plot].labels.push(
 					make_label_text_plane(
 						params.data[i].label,
@@ -4517,7 +4518,7 @@ var make_mesh_arrays = function(i_plot, params, plot_locations, null_points) {
 }
 
 var make_mesh_points = function(i_plot, params, plot_locations, null_points) {
-    debugger;
+    // debugger;
 	var i, j;
 	var nx = plot_locations.x.length;
 	var ny = plot_locations.y.length;
@@ -5619,7 +5620,7 @@ var check_webgl_fallback = function(params) {
 }
 
 var basic_plot_setup = function(i_plot, params) {
-    debugger;
+    // debugger;
 	// A variable for possible use in the touch controls.
 	plots[i_plot].old_t = Date.now();
 	
@@ -5937,7 +5938,7 @@ var add_photosphere = function(i_plot, params) {
 }
 
 var basic_plot_listeners = function(i_plot, params) {
-    debugger;
+    // debugger;
 	plots[i_plot].mouse_operation = "none";
 	plots[i_plot].two_finger_operation = "none";
 	
@@ -6057,8 +6058,8 @@ var custom_plot_listeners = function(i_plot, params) {
 		}
 	}
 }
-
-var make_scatter = function(params) {
+//-------------------------------------INIT SCATTER
+var make_scatter = function(params) {  //ROOT ENTRY POINT
     debugger;
 	if (!check_webgl_fallback(params)) { return; }
 	
@@ -6084,7 +6085,7 @@ var make_scatter = function(params) {
 		plots[i_plot].have_segments = (params.hasOwnProperty("connect_points")) ? params.connect_points : false;
 	}
 	
-	var default_color = (params.hasOwnProperty("default_color")) ? params.default_color : 0xFFFFFF;
+	var default_color = (params.hasOwnProperty("default_color")) ? params.default_color : 0xFFFF44;
 	
 	if (typeof(default_color) == "string") {
 		default_color = css_color_to_hex(default_color, tiny_div);
@@ -6153,7 +6154,8 @@ var make_scatter = function(params) {
 		
 		// See if any named groups are not in the group details.
 		var data_groups = [];
-		
+		//---------------------------------------------------DATA INIT
+        debugger;
 		for (i = 0; i < params.data.length; i++) {
 			if (params.data[i].hasOwnProperty("group")) {
 				if (plots[i_plot].groups[params.data[i].group] === undefined) {
@@ -6195,9 +6197,13 @@ var make_scatter = function(params) {
 	
 	// The textures load asynchronously, so the onload function checks
 	// to see if all textures have been loaded before continuing.
-	
+
+    //-----------------------------------------------------------SCATTER DATA
 	for (i = 0; i < plots[i_plot].texture_sources.length; i++) {
-		plots[i_plot].textures.push(new THREE.TextureLoader().load(plots[i_plot].texture_sources[i], function () { check_loaded_textures(i_plot, params); }));
+		plots[i_plot].textures.push(
+            new THREE.TextureLoader().load(plots[i_plot].texture_sources[i], 
+                function () { 
+                    check_loaded_textures(i_plot, params); }));
 	}
 	
 	plots[i_plot].parent_div.removeChild(tiny_div);
@@ -6235,7 +6241,7 @@ var make_scatter_main = function(params, i_plot) {
 	if (i_plot === undefined) {
 		var i_plot = plots.length - 1;
 	}
-	
+	console.log('MAIN SCATTER---------------------------')
 	basic_plot_setup(i_plot, params);
 	prepare_sizes(i_plot, params);
 	make_axes(i_plot, params);
@@ -6268,7 +6274,7 @@ var make_scatter_main = function(params, i_plot) {
 			}
 		}
 	}
-	
+	console.log('Calculate Locations----------------------------')
 	var temp_obj = calculate_locations(i_plot, params);
 	var plot_locations = JSON.parse(JSON.stringify(temp_obj.plot_locations));
 	
@@ -6357,7 +6363,7 @@ var check_surface_data_sizes = function(params) {
 }
 
 var make_surface = function(params) {
-    debugger;
+    // debugger;
 	if (!check_webgl_fallback(params)) { return; }
 	
 	var size_checks = check_surface_data_sizes(params);
