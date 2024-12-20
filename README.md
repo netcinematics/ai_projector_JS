@@ -1,5 +1,7 @@
-# ai_projector_JS
+# ai_3D_Scatter_Plot
 
 - project embeddings for LLM
 
-Delicious Vanilla JavaScript version of tfjs projector.
+- data visualizatin in THREE.js
+
+
